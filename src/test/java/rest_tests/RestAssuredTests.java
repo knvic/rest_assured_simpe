@@ -30,7 +30,7 @@ public class RestAssuredTests extends BaseTest{
         }
 
         @Test
-        void getUser() {
+        void successfulGetUserTest() {
             given()
                     .log().uri()
                     .log().method()
@@ -44,8 +44,9 @@ public class RestAssuredTests extends BaseTest{
                     .body("page", is(8));
         }
 
+
     @Test
-    void getListUsers() {
+    void successfulGetListUsersTest() {
         given()
                 .log().uri()
                 .log().method()
@@ -60,7 +61,7 @@ public class RestAssuredTests extends BaseTest{
     }
 
         @Test
-        void createUser() {
+        void successfulCreateUserTest() {
             String authData = "{\"name\": \"vasya\", \"job\": \"boss\"}";
 
             given()
@@ -82,7 +83,7 @@ public class RestAssuredTests extends BaseTest{
 
 
         @Test
-        void updateUser() {
+        void successfulUpdateUserTest() {
             String authData = "{\"name\": \"vasya\", \"job\": \"bigboss\"}";
 
             given()
@@ -102,15 +103,12 @@ public class RestAssuredTests extends BaseTest{
         }
 
     @Test
-    void deleteUser() {
-        String authData = "{\"name\": \"vasya\", \"job\": \"bigboss\"}";
-
-        given()
+    void successfulDeleteUser() {
+               given()
                 .log().uri()
                 .log().method()
                 .log().body()
                 .contentType(JSON)
-                .body(authData)
                 .when()
                 .delete("/users/2")
                 .then()
@@ -121,7 +119,7 @@ public class RestAssuredTests extends BaseTest{
 
         @Test
         void successfulRegisterUser() {
-            String authData = "{\"email\": \"asd@qa.ru\", \"password\": \"qwerty\"}";
+            String authData = "{\"email\": \"eve.holt@reqres.in\", \"password\": \"qwerty\"}";
 
             given()
                     .log().uri()
@@ -130,14 +128,36 @@ public class RestAssuredTests extends BaseTest{
                     .contentType(JSON)
                     .body(authData)
                     .when()
-                    .post("/users")
+                    .post("/register")
                     .then()
                     .log().status()
                     .log().body()
-                    .statusCode(201)
-                    .body("email", is("asd@qa.ru"));
+                    .statusCode(200)
+                   // .body("email", is("asd@qa.ru"));
+                    .body("token", is("QpwL5tke4Pnpja7X4"));
         }
 
+
+
+    @Test
+    void usuccessfulRegisterUser() {
+        String authData = "{\"email\": \"qa@reqres.in\", \"password\": \"pistol1\"}";
+
+        given()
+                .log().uri()
+                .log().method()
+                .log().body()
+                .contentType(JSON)
+                .body(authData)
+                .when()
+                .post("/register")
+                .then()
+                .log().status()
+                .log().body()
+                .statusCode(400)
+                // .body("email", is("asd@qa.ru"));
+                .body("error", is("Note: Only defined users succeed registration"));
+    }
         @Test
         void unsuccessfulRegisterUser() {
             String authData = "{\"email\": \"asd@qa.ru\"}";
