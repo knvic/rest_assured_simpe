@@ -103,22 +103,19 @@ public class RestAssuredTests extends BaseTest{
         }
 
     @Test
-    void successfulDeleteUser() {
+    void successfulDeleteUserTest() {
                given()
                 .log().uri()
                 .log().method()
-                .log().body()
-                .contentType(JSON)
                 .when()
                 .delete("/users/2")
                 .then()
                 .log().status()
-                .log().body()
                 .statusCode(204);
     }
 
         @Test
-        void successfulRegisterUser() {
+        void successfulRegisterUserTest() {
             String authData = "{\"email\": \"eve.holt@reqres.in\", \"password\": \"qwerty\"}";
 
             given()
@@ -140,7 +137,7 @@ public class RestAssuredTests extends BaseTest{
 
 
     @Test
-    void usuccessfulRegisterUser() {
+    void unsuccessfulRegisterNotValidUserTest() {
         String authData = "{\"email\": \"qa@reqres.in\", \"password\": \"pistol1\"}";
 
         given()
@@ -159,7 +156,7 @@ public class RestAssuredTests extends BaseTest{
                 .body("error", is("Note: Only defined users succeed registration"));
     }
         @Test
-        void unsuccessfulRegisterUser() {
+        void unsuccessfulRegisterUserMissingPasswordTest() {
             String authData = "{\"email\": \"asd@qa.ru\"}";
 
             given()
