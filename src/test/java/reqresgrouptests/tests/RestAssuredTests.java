@@ -1,12 +1,74 @@
-package rest_tests;
+package reqresgrouptests.tests;
+
+import io.qameta.allure.restassured.AllureRestAssured;
 
 import org.junit.jupiter.api.Test;
 
+import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static reqresgrouptests.specs.LoginSpec.loginRequestSpec;
+
+import reqresgrouptests.models.*;
+
+
 
 public class RestAssuredTests extends BaseTest{
+
+   // LoginResponseLombokModel response = step("Make login request", () ->);
+
+
+    @Test
+    void successfulLoginWithAllureTest() {
+        //String authData = "{ \"email\": \"eve.holt@reqres.in\", \"password\": \"cityslicka\" }";
+       LoginBodyModel  authData=new LoginBodyModel();
+        authData.setEmail("eve.holt@reqres.in");
+        authData.setPassword("cityslicka");
+
+        LoginResponseModel response = step("Make login request", () ->
+        given()
+                .filter(new AllureRestAssured())
+                .log().uri()
+                .log().method()
+                .log().body()
+                .contentType(JSON)
+                .body(authData)
+                .when()
+                .post("/login")
+                .then()
+                .log().status()
+                .log().body()
+                .statusCode(200)
+                .extract().as(LoginResponseModel.class));
+
+        step("Verify response", () ->
+                assertEquals("QpwL5tke4Pnpja7X4", response.getToken()));
+    }
+
+    @Test
+    void successfulLoginWithSpecsAllureTest() {
+       LoginBodyModel authData= new LoginBodyModel();
+        authData.setEmail("eve.holt@reqres.in");
+        authData.setPassword("cityslicka");
+
+        LoginResponseModel response = step("Make login request", () ->
+                given()
+                        .spec(loginRequestSpec)
+                        .filter(new AllureRestAssured())
+                        .body(authData)
+                        .when()
+                        .post("/login")
+                        .then()
+                        .log().status()
+                        .log().body()
+                        .statusCode(200)
+                        .extract().as(LoginResponseModel.class));
+
+        step("Verify response", () ->
+                assertEquals("QpwL5tke4Pnpja7X4", response.getToken()));
+    }
 
 
 

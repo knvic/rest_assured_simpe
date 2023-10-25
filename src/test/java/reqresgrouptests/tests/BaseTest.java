@@ -1,4 +1,4 @@
-package rest_tests;
+package reqresgrouptests.tests;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
