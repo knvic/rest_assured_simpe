@@ -33,4 +33,10 @@ public class LoginSpec {
             .log(BODY)
             .expectStatusCode(400)
             .build();
+    public static ResponseSpecification  successfulSpec = new ResponseSpecBuilder()
+            .log(STATUS)
+            .log(BODY)
+            .expectStatusCode(200)
+            .build();
+
 }
