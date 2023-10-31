@@ -2,6 +2,7 @@ package reqresgrouptests.tests;
 
 import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.*;
@@ -13,7 +14,7 @@ import static reqresgrouptests.specs.LoginSpec.loginResponseSpec;
 
 import reqresgrouptests.models.*;
 
-
+@Tag("api")
 public class RestAssuredTests extends BaseTest {
 
     @Test
