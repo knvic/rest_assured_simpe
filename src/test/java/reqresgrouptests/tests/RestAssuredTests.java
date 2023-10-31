@@ -8,9 +8,8 @@ import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static reqresgrouptests.specs.LoginSpec.loginRequestSpec;
-import static reqresgrouptests.specs.LoginSpec.loginResponseSpec;
+import static reqresgrouptests.specs.GeneralizedSpec.generalizedRequestSpec;
+import static reqresgrouptests.specs.GeneralizedSpec.generalizedResponseSpec;
 
 import reqresgrouptests.models.*;
 
@@ -25,12 +24,12 @@ public class RestAssuredTests extends BaseTest {
 
         LoginResponseModel response = step("Посылаем запрос с данными на авторизацию", () ->
                 given()
-                        .spec(loginRequestSpec)
+                        .spec(generalizedRequestSpec)
                         .body(authData)
                         .when()
                         .post("/login")
                         .then()
-                        .spec(loginResponseSpec)
+                        .spec(generalizedResponseSpec)
                         .extract().as(LoginResponseModel.class));
 
         step("В ответе присутствует токен авторизации", () ->
@@ -42,19 +41,19 @@ public class RestAssuredTests extends BaseTest {
     void successfulGetUserTest() {
         UserModel userModel = step("Посылаем зпрос на вывод страницы 3, зная что страниц с данными 2", () ->
                 given()
-                        .spec(loginRequestSpec)
+                        .spec(generalizedRequestSpec)
                         .when()
                         .get("/users?page=3")
                         .then()
-                        .spec(loginResponseSpec)
+                        .spec(generalizedResponseSpec)
                         .extract().as(UserModel.class));
         step("Проверяем, что на странице 3 масиив с данными отсутствует и размер массива 0", () ->
                 assertThat(userModel.getDataList()).hasSize(0));
 
-        step("Проверяем наличие поля  URL", () ->
+        step("Проверяем наличие поля  URL https://reqres.in/#support-heading", () ->
                 assertThat(userModel.getSupport().getUrl()).isEqualTo("https://reqres.in/#support-heading"));
 
-        step("Проверяем наличие поля Text", () ->
+        step("Проверяем наличие поля Text To keep ReqRes free, contributions towards server costs are appreciated!", () ->
                 assertThat(userModel.getSupport().getText()).isEqualTo("To keep ReqRes free, contributions towards server costs are appreciated!"));
 
 
@@ -65,11 +64,11 @@ public class RestAssuredTests extends BaseTest {
     void successfulGetListUsersTest() {
         UserModel userModel = step("Посылаем зпрос на вывод страницы 2 где есть данные", () ->
                 given()
-                        .spec(loginRequestSpec)
+                        .spec(generalizedRequestSpec)
                         .when()
                         .get("/users?page=2")
                         .then()
-                        .spec(loginResponseSpec)
+                        .spec(generalizedResponseSpec)
                         .extract().as(UserModel.class));
 
         step("В поле total значение 12", () ->
@@ -94,7 +93,7 @@ public class RestAssuredTests extends BaseTest {
         user.setJob("boss");
         step("Посылаем запрос на создание пользователя с данными класса User. Проверяем в ответе статус 201 и подтверждение созданных данных", () ->
                 given()
-                        .spec(loginRequestSpec)
+                        .spec(generalizedRequestSpec)
                         .body(user)
                         .when()
                         .post("/users")
@@ -114,7 +113,7 @@ public class RestAssuredTests extends BaseTest {
         user.setJob("boss");
         Response response = step("Посылаем запрос на создание пользователя. Получаем объект Response", () ->
                 given()
-                        .spec(loginRequestSpec)
+                        .spec(generalizedRequestSpec)
                         .body(user)
                         .when()
                         .post("/users"));
@@ -134,7 +133,7 @@ public class RestAssuredTests extends BaseTest {
         user.setName("vasya");
         user.setJob("bigboss");
         Response response = step("Обновляем данные объекта", () -> given()
-                .spec(loginRequestSpec)
+                .spec(generalizedRequestSpec)
                 .body(user)
                 .when()
                 .patch("/users/2"));
@@ -150,6 +149,7 @@ public class RestAssuredTests extends BaseTest {
     void successfulDeleteUserTest() {
         Response response = step("Удаляем объект", () ->
                 given()
+                        .spec(generalizedRequestSpec)
                         .log().uri()
                         .log().method()
                         .when()
@@ -168,7 +168,7 @@ public class RestAssuredTests extends BaseTest {
         authData.setPassword("pistol1");
         Response response = step("Отправка запроса на регистрацию с несуществующим именем qa@reqres.in ", () ->
                 given()
-                .spec(loginRequestSpec)
+                .spec(generalizedRequestSpec)
                 .body(authData)
                 .when()
                 .post("/register"));
@@ -188,7 +188,7 @@ public class RestAssuredTests extends BaseTest {
 
         Response response = step("Отправка запроса на регистрацию с неправильным паролем", () ->
                 given()
-                        .spec(loginRequestSpec)
+                        .spec(generalizedRequestSpec)
                         .body(authData)
                         .when()
                         .post("/register"));
