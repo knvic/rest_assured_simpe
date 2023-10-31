@@ -3,12 +3,9 @@ package reqresgrouptests.tests;
 import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.*;
-import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static reqresgrouptests.specs.LoginSpec.loginRequestSpec;
@@ -20,7 +17,7 @@ import reqresgrouptests.models.*;
 public class RestAssuredTests extends BaseTest {
 
     @Test
-    void successfulLoginWithSpecsAllureTest() {
+    void successfulLoginTest() {
         LoginBodyModel authData = new LoginBodyModel();
         authData.setEmail("eve.holt@reqres.in");
         authData.setPassword("cityslicka");
@@ -36,7 +33,7 @@ public class RestAssuredTests extends BaseTest {
                         .extract().as(LoginResponseModel.class));
 
         step("В ответе присутствует токен авторизации", () ->
-                assertEquals("QpwL5tke4Pnpja7X4", response.getToken()));
+                assertThat(response.getToken()).isEqualTo("QpwL5tke4Pnpja7X4"));
     }
 
 
