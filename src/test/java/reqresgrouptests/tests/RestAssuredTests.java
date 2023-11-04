@@ -10,7 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static reqresgrouptests.specs.GeneralizedSpec.generalizedRequestSpec;
 import static reqresgrouptests.specs.GeneralizedSpec.generalizedResponseSpec;
-
 import reqresgrouptests.models.*;
 
 @Tag("api")
@@ -81,7 +80,7 @@ public class RestAssuredTests extends BaseTest {
                 assertThat(userModel.getDataList().size()).isEqualTo(6));
 
         step("В объекте 3 с данными из массива в поле first_name значение Tobias ", () ->
-                assertThat(userModel.getDataList().get(2).getFirst_name()).isEqualTo("Tobias"));
+                assertThat(userModel.getDataList().get(2).getFirstName()).isEqualTo("Tobias"));
 
     }
 
